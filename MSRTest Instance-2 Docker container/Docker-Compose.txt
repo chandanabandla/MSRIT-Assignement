@@ -1,0 +1,19 @@
+
+version: "3"
+
+services:
+  couchdb:
+    image: couchdb
+    restart: always
+    networks:
+      - couchdb-test
+    ports:
+      - "5984:5984"
+
+networks:
+  couchdb-test:
+    external: true
+
+volumes:
+  couchdb-test:
+    external: true
