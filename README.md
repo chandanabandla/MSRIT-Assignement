@@ -39,7 +39,7 @@
     o Ssh ansible@PrivateIPAdress
   * Create user as mentioned above with the same user name as ansible.
   * Install python on both the nodes. 
-> Enable key-based authentication between machines. So that we don�t need to give password every time we login.
+> Enable key-based authentication between machines. So that we dont need to give password every time we login.
   * Login to ACS machine
   * Generate Key
     [ssh-keygen]
@@ -68,12 +68,16 @@ Node2 DNS
 4. Create a Docker Container in MSR-test-Instance-2 using Docker Compose file and ensure CouchDB Database is installed. Try to use any configuration management tool to automate the entire installation processes. We should be able to access the Futon - web GUI of CouchDB, from the external system.
 
 > Docker and docker-compose is already installed using ansible on both the nodes.
+
 > Create a docker network
   [docker network create couchdb-test]
+
 > Create a docker volume
   [docker volume create --name=couchdb-test]
+
 > Create a folder "MSRTest Instance-1 Docker container" and write the docker-compose file inside the folder. Run the following command from the project root folder.
   [Docker-compose up]
+
 > To access the web GUI of couchdb, open a browser and type the following
    
             http://13.126.233.159:5984/_utils/
