@@ -1,0 +1,117 @@
+---
+- hosts: ubuntu
+  become: yes
+  tasks:
+  - name: Install nvm
+    shell: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+    args:
+      executable: /bin/bash
+      chdir: "{{ ansible_env.HOME }}"
+      creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+      warn: false
+---
+- hosts: ubuntu
+  become: yes
+  tasks:
+  - name: Install Node
+    shell: '. {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm alias default 8.12.0'
+    args:
+      chdir: "{{ ansible_env.HOME }}"
+      executable: /bin/bash
+      warn: false
+      
+---
+# Installing docker and Docker-Compose
+- hosts: ubuntu
+  become: yes
+  tasks:
+
+# installing docker Packages
+  - name: Install docker packages
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    with_items:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+    tags:
+      - docker
+
+# Adding GPG key
+  - name: Add Docker s official GPG key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+    tags:
+      - docker
+
+# fingerprint 0EBFCD88
+  - name: Verify that we have the key with the fingerprint
+    apt_key:
+      id: 0EBFCD88
+      state: present
+    tags:
+      - docker
+
+# Setting repository
+ - name: Setting up repository
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+      state: present
+      update_cache: yes
+    tags:
+      - docker
+
+# updating package
+  - name: Update apt packages
+    apt:
+      update_cache: yes
+    tags:
+      - docker
+
+# installing docker
+  - name: Install docker
+    apt:
+      name: docker-ce=18.06.*
+      state: present
+      update_cache: yes
+    notify: Start docker on boot
+    tags:
+      - docker
+
+# installing docker-compose
+  - name: Install docker-compose
+    apt:
+      name: docker-compose=1.13.*
+      state: present
+      update_cache: yes
+    tags:
+      - docker
+  handlers:
+  - name: Start docker on boot
+    systemd:
+      name: docker
+      state: started
+      enabled: yes
+      
+---
+- hosts: ubuntu
+  become: yes
+  tasks:
+  - name: Install openssl
+    apt:
+      name: openssl
+      state: present
+      update_cache: yes
+
+---
+- hosts: ubuntu
+  become: yes
+  tasks:
+  - name: Install Git
+    apt:
+      name: Git
+      state: present
