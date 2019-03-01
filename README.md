@@ -6,7 +6,7 @@
 > Create a folder and open the terminal
 > Run the following commands
   
-  [Terraform init .]
+    [Terraform init .]
   * Added code in a file and saved the file with .tf extension and run the following command
     
     [terraform validate .]
@@ -71,8 +71,11 @@ For Example:
 
 [Ubuntu]
 localhost
+
 Node1 DNS
+
 Node2 DNS
+
 > To check whether the machines are established connections
   
   [ansible -m ping all]
